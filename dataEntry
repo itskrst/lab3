@@ -1,0 +1,57 @@
+package Auction;
+
+public class dataEntry {
+	
+	String name; 
+	String email, password;
+	String homeAddress, shippingAddress;
+	String bankAccount, routingNumber, phoneNumber;
+	
+	
+	//buyer
+	dataEntry(String Name,
+				String Email,
+				String Password,
+				String HomeAddress,
+				String ShippingAddress,
+				String phoneNum
+					) {
+		
+		
+		this.name = Name;
+		this.email = Email;
+		this.password = Password;
+		this.homeAddress = HomeAddress;
+		this.shippingAddress = ShippingAddress;
+		this.phoneNumber = phoneNum;
+		
+	}
+	
+	//seller
+	dataEntry(String name,
+				String email,
+				String password,
+				String homeAddress,
+				String BankAccount,
+				String RoutingNumber,
+				String phoneNumber){
+		
+		
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.homeAddress = homeAddress;
+		this.bankAccount = BankAccount;
+		this.routingNumber = RoutingNumber;
+		this.phoneNumber = phoneNumber;
+		
+	}
+	
+	
+	
+}
+	
+	
+	
+
+
