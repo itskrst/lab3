@@ -1,0 +1,37 @@
+package Auction;
+
+import java.util.Scanner;
+
+public class sell {
+	
+	Scanner s = new Scanner(System.in);
+	
+	void items() {
+		
+		System.out.print("\nName of Item: ");
+		String item = s.nextLine();
+		
+		System.out.print("Item description: ");
+		String description = s.nextLine();
+		
+		System.out.print("Starting Bid Price: ");
+		double startingBid = s.nextDouble();
+		
+		s.nextLine();
+		
+		System.out.print("Bidding Increment: ");
+		double bidIncrement = s.nextDouble();
+		
+		s.nextLine();
+		
+		System.out.print("Beginning of the Auction (MM/DD/YY): ");
+		String begin = s.nextLine();
+		
+		System.out.print("Auction Closure Date (MM/DD/YY): ");
+		String closure = s.nextLine();
+	}
+	
+	
+	
+	
+}
