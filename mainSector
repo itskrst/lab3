@@ -1,0 +1,126 @@
+package Auction;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+import Auction.sell;
+
+public class mainSector {
+
+	public static void main(String[] args) {
+		
+		sell selling = new sell();
+		
+		ArrayList<dataEntry> data = new ArrayList<dataEntry>();
+		
+		String[] menuOptions = {"Register", "Buy", "Sell", "Auction Winners", "Feedback", "Exit"};
+		
+        Scanner s = new Scanner(System.in);
+
+        System.out.println("Menu:");
+        for (int i = 0; i < menuOptions.length; i++) {
+            System.out.println((i + 1) + ". " + menuOptions[i]);
+        }
+
+        System.out.print("\nEnter the number of your choice: ");
+        int choice = s.nextInt();
+
+       s.nextLine();
+       
+       
+       if (choice == 1) {
+           
+           System.out.println("\n-- Registration --");
+
+           System.out.print("1. Buyer\n2. Seller\n");
+           System.out.print("\nEnter choice: ");
+           String input = s.nextLine();
+        		
+        		if(input.equals("1")) {
+        			System.out.print("\nEnter Name: ");
+        			String name = s.nextLine();
+        			
+        			System.out.print("Enter Email: ");
+        			String email = s.nextLine();
+        			
+        			System.out.print("Enter Password: ");
+        			String password = s.nextLine();
+        			
+        			System.out.print("Enter Home Address: ");
+        			String homeAdd = s.nextLine();
+        			
+        			System.out.print("Enter Shipping Address: ");
+        			String shipAdd = s.nextLine();
+        			
+        			System.out.print("Enter Phone Number: ");
+        			String phoneNumber = s.nextLine();
+        			
+        			data.add(new dataEntry(name, email, password, homeAdd, shipAdd, phoneNumber));
+        			
+        			
+        			
+        		}
+        		
+        		else if(input.equals("2")) {
+        			System.out.print("\nEnter Name: ");
+        			String Name = s.nextLine();
+        			
+        			System.out.print("Enter Email: ");
+        			String Email = s.nextLine();
+        			
+        			System.out.print("Enter Password: ");
+        			String Password = s.nextLine();
+        			
+        			System.out.print("Enter Home Address: ");
+        			String homeAddress = s.nextLine();
+        			
+        			System.out.print("Enter Bank Account: ");
+        			String bankAccount = s.nextLine();
+        			
+        			System.out.print("Enter Routing Number: ");
+        			String routingNumber = s.nextLine();
+        			
+        			System.out.print("Enter Phone Number: ");
+        			String PhoneNumber = s.nextLine();
+        			
+        			data.add(new dataEntry(Name, Email, Password, homeAddress, bankAccount, routingNumber, PhoneNumber));
+        			
+        			System.out.print("\nProceed to sell items? (y/n) ");
+        			String proceed = s.nextLine();
+        			
+        				if(proceed.equalsIgnoreCase("y")) {
+        					
+        					selling.items();
+        					
+        				}
+        		}
+        		
+        		 else {
+                     System.out.println("Invalid choice.");
+                 }
+        		
+        
+       if (choice == 2) {
+    	   
+       }
+        
+        		
+        		
+      
+        		
+        	
+        	
+        		
+        		
+        	
+        	
+        		
+        		
+        }
+	}
+		    
+		
+
+
+}
+
+
