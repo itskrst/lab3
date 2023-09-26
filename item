@@ -1,0 +1,39 @@
+package Auction;
+
+public class item {
+    private String item, description, begin, closure;
+    private double startingBid, bidIncrement;
+
+    public item(String item, String description, String begin, String closure, double startingBid, double bidIncrement) {
+        this.item = item;
+        this.description = description;
+        this.begin = begin;
+        this.closure = closure;
+        this.startingBid = startingBid;
+        this.bidIncrement = bidIncrement;
+    }
+
+    public String getItem() {
+        return item;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getBegin() {
+        return begin;
+    }
+
+    public String getClosure() {
+        return closure;
+    }
+
+    public double getStartingBid() {
+        return startingBid;
+    }
+
+    public double getBidIncrement() {
+        return bidIncrement;
+    }
+}
