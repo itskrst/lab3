@@ -1,0 +1,44 @@
+package Auction;
+
+import java.util.Scanner;
+
+public class buy {
+
+    void Buy(sell seller) {
+        Scanner s = new Scanner(System.in);
+
+        System.out.println("\n-- Items Available --");
+
+        
+        seller.showItemsWithNumbers();
+
+        System.out.print("Choose an item by entering its number (0 to cancel): ");
+        int itemNumber = s.nextInt();
+        
+        s.nextLine(); 
+
+        if (itemNumber > 0 && itemNumber <= seller.getItemsListSize()) {
+        	
+            item chosenItem = seller.getItemByNumber(itemNumber);
+            
+            System.out.println("\n-- Item Details --");
+            System.out.println("Item: " + chosenItem.getItem());
+            System.out.println("Description: " + chosenItem.getDescription());
+            System.out.println("Starting Price: " + chosenItem.getStartingBid());
+            System.out.println("Bidding Increment: " + chosenItem.getBidIncrement());
+            System.out.println("Starting Date of the Auction: " + chosenItem.getBegin());
+            System.out.println("Ending of the Auction: " + chosenItem.getClosure());
+        } 
+        
+        else if (itemNumber == 0) {
+            System.out.println("Purchase canceled.");
+        } 
+        
+        else {
+            System.out.println("Invalid item number.");
+        }
+    }
+}
+
+
+
