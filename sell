@@ -1,37 +1,77 @@
 package Auction;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class sell {
-	
-	Scanner s = new Scanner(System.in);
-	
-	void items() {
-		
-		System.out.print("\nName of Item: ");
-		String item = s.nextLine();
-		
-		System.out.print("Item description: ");
-		String description = s.nextLine();
-		
-		System.out.print("Starting Bid Price: ");
-		double startingBid = s.nextDouble();
-		
-		s.nextLine();
-		
-		System.out.print("Bidding Increment: ");
-		double bidIncrement = s.nextDouble();
-		
-		s.nextLine();
-		
-		System.out.print("Beginning of the Auction (MM/DD/YY): ");
-		String begin = s.nextLine();
-		
-		System.out.print("Auction Closure Date (MM/DD/YY): ");
-		String closure = s.nextLine();
-	}
-	
-	
-	
-	
+
+    private ArrayList<item> itemsList = new ArrayList<item>();
+    private List<item> itemsList1 = new ArrayList<item>();
+
+    public void addItem(item item) {
+        itemsList.add(item);
+    }
+
+    public void sell(Scanner scanner) {
+        System.out.print("\nEnter Name of Item: ");
+        String itemName = scanner.nextLine();
+
+        System.out.print("Enter Item Description: ");
+        String itemDescription = scanner.nextLine();
+
+        System.out.print("Enter Starting Bid Price: ");
+        double startingBid = scanner.nextDouble();
+
+        scanner.nextLine(); 
+
+        System.out.print("Enter Bidding Increment: ");
+        double bidIncrement = scanner.nextDouble();
+
+        scanner.nextLine(); 
+
+        System.out.print("Enter Beginning of the Auction (MM/DD/YYYY): ");
+        String begin = scanner.nextLine();
+
+        System.out.print("Enter Auction Closure Date (MM/DD/YYYY): ");
+        String closure = scanner.nextLine();
+
+        item newItem = new item(itemName, itemDescription, begin, closure, startingBid, bidIncrement);
+        addItem(newItem);
+    }
+
+    public void showItems(item item) {
+  
+        for (item item1 : itemsList) {
+            System.out.println("\nItem: " + item1.getItem());
+            System.out.println("Description: " + item1.getDescription());
+            System.out.println("Starting Price: " + item1.getStartingBid());
+            System.out.println("Bidding Increment: " + item1.getBidIncrement());
+            System.out.println("Starting Date of the Auction: " + item1.getBegin());
+            System.out.println("Ending of the Auction: " + item1.getClosure());
+            System.out.println();
+        }
+    }
+
+    public void showItemsWithNumbers() {
+        System.out.println("\n-- Items Available  --");
+        for (int i = 0; i < itemsList.size(); i++) {
+            System.out.println((i + 1) + ". " + itemsList.get(i).getItem());
+        }
+    }
+
+    public int getItemsListSize() {
+        return itemsList.size();
+    }
+
+    public item getItemByNumber(int itemNumber) {
+        if (itemNumber >= 1 && itemNumber <= itemsList.size()) {
+            return itemsList.get(itemNumber - 1);
+        }
+        return null; // Return null if the item number is out of bounds
+    }
+
+    public List<item> getItemsList() {
+        return itemsList1;
+    }
 }
