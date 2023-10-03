@@ -1,0 +1,390 @@
+package AuctionBidding;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class main {
+
+    public static void main(String[] args) {
+
+        ArrayList<DataEntry> data = new ArrayList<>();
+        Scanner scanner = new Scanner(System.in);
+        boolean exitProgram = false;
+        Sell seller = null;
+
+        while (!exitProgram) {
+            System.out.println("\nMenu:");
+            String[] menuOptions = {"Register", "Buy", "Sell", "Auction Winners", "Feedback", "Exit"};
+            for (int i = 0; i < menuOptions.length; i++) {
+                System.out.println((i + 1) + ". " + menuOptions[i]);
+            }
+
+            System.out.print("\nEnter the number of your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if (choice == 1) {
+                System.out.println("\n-- Registration --");
+                System.out.print("1. Buyer\n2. Seller\n");
+                System.out.print("\nEnter choice: ");
+                String input = scanner.nextLine();
+
+                if (input.equals("1")) {
+                    System.out.print("\nEnter Name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter Email: ");
+                    String email = scanner.nextLine();
+                    System.out.print("Enter Password: ");
+                    String password = scanner.nextLine();
+                    System.out.print("Enter Home Address: ");
+                    String homeAdd = scanner.nextLine();
+                    System.out.print("Enter Shipping Address: ");
+                    String shipAdd = scanner.nextLine();
+                    System.out.print("Enter Phone Number: ");
+                    String phoneNumber = scanner.nextLine();
+                    data.add(new DataEntry(name, email, password, homeAdd, shipAdd, phoneNumber));
+                } else if (input.equals("2")) {
+                    System.out.print("\nEnter Name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter Email: ");
+                    String email = scanner.nextLine();
+                    System.out.print("Enter Password: ");
+                    String password = scanner.nextLine();
+                    System.out.print("Enter Home Address: ");
+                    String homeAddress = scanner.nextLine();
+                    System.out.print("Enter Bank Account: ");
+                    String bankAccount = scanner.nextLine();
+                    System.out.print("Enter Routing Number: ");
+                    String routingNumber = scanner.nextLine();
+                    System.out.print("Enter Phone Number: ");
+                    String phoneNumber = scanner.nextLine();
+                    data.add(new DataEntry(name, email, password, homeAddress, bankAccount, routingNumber, phoneNumber));
+                    System.out.print("\nProceed to sell items? (y/n) ");
+                    String proceed = scanner.nextLine();
+                    if (proceed.equalsIgnoreCase("y")) {
+                        seller = new Sell();
+                        seller.sell(scanner);
+                    }
+                } else {
+                    System.out.println("Invalid choice.");
+                }
+            }
+
+            if (choice == 2) {
+                if (seller != null) {
+                    if (seller.getItemsListSize() > 0) {
+                        Buy buyer = new Buy();
+                        buyer.buy(seller, scanner);
+                    } else {
+                        System.out.println("\nYou need to register as a buyer and add items first.");
+                    }
+                } else {
+                    System.out.println("\nYou need to register as a buyer first.");
+                }
+            } else if (choice == 3) {
+                if (seller != null) {
+                    seller.sell(scanner);
+                } else {
+                    System.out.println("\nYou need to register as a seller first.");
+                }
+            } else if (choice == 4) {
+                System.out.println("\n-- Feedback for Items --");
+                for (Item auctionItem : seller.getItemsList()) {
+                    System.out.println("Item: " + auctionItem.getItem());
+                    List<String> feedbacks = auctionItem.getFeedbacks();
+                    if (!feedbacks.isEmpty()) {
+                        System.out.println("Feedback:");
+                        for (String feedback : feedbacks) {
+                            System.out.println("- " + feedback);
+                        }
+                    } else {
+                        System.out.println("No feedback available for this item.");
+                    }
+                }
+            } else if (choice == 5) {
+                System.out.println("\n-- Feedback --");
+                System.out.print("Enter item name to provide feedback (or '0' to go back): ");
+                String itemName = scanner.nextLine();
+
+                if (!itemName.equals("0")) {
+                    Item selectedItem = null;
+                    for (Item auctionItem : seller.getItemsList()) {
+                        if (auctionItem.getItem().equalsIgnoreCase(itemName)) {
+                            selectedItem = auctionItem;
+                            break;
+                        }
+                    }
+
+                    if (selectedItem != null) {
+                        System.out.print("Enter your feedback for item '" + itemName + "': ");
+                        String feedback = scanner.nextLine();
+                        selectedItem.addFeedback(feedback);
+                        System.out.println("Feedback added successfully for item '" + itemName + "'.");
+                    } else {
+                        System.out.println("Item not found.");
+                    }
+                }
+            } else if (choice == 6) {
+                exitProgram = true;
+            } else {
+                System.out.println("Invalid choice.");
+            }
+        }
+    }
+}
+
+class DataEntry {
+
+    String name;
+    String email, password;
+    String homeAddress, shippingAddress;
+    String bankAccount, routingNumber, phoneNumber;
+
+    DataEntry(String Name,
+            String Email,
+            String Password,
+            String HomeAddress,
+            String ShippingAddress,
+            String phoneNum
+    ) {
+
+        this.name = Name;
+        this.email = Email;
+        this.password = Password;
+        this.homeAddress = HomeAddress;
+        this.shippingAddress = ShippingAddress;
+        this.phoneNumber = phoneNum;
+
+    }
+
+    DataEntry(String name,
+            String email,
+            String password,
+            String homeAddress,
+            String BankAccount,
+            String RoutingNumber,
+            String phoneNumber) {
+
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.homeAddress = homeAddress;
+        this.bankAccount = BankAccount;
+        this.routingNumber = RoutingNumber;
+        this.phoneNumber = phoneNumber;
+
+    }
+}
+
+class Buy {
+
+    public void buy(Sell seller, Scanner scanner) {
+        System.out.println("\n-- Items Available --");
+        seller.showItemsWithNumbers();
+
+        System.out.print("Choose an item by entering its number (0 to cancel): ");
+        int itemNumber = scanner.nextInt();
+        scanner.nextLine();
+
+        if (itemNumber > 0 && itemNumber <= seller.getItemsListSize()) {
+            Item chosenItem = seller.getItemByNumber(itemNumber);
+
+            System.out.println("\n-- Item Details --");
+            System.out.println("Item: " + chosenItem.getItem());
+            System.out.println("Description: " + chosenItem.getDescription());
+            System.out.println("Starting Price: ₱" + chosenItem.getStartingBid());
+            System.out.println("Bidding Increment: ₱" + chosenItem.getBidIncrement());
+            System.out.println("Starting Date of the Auction: " + chosenItem.getBegin());
+            System.out.println("Ending of the Auction: " + chosenItem.getClosure());
+
+            System.out.print("Do you want to buy this item? (y/n): ");
+            String buyChoice = scanner.nextLine();
+
+            if (buyChoice.equalsIgnoreCase("y")) {
+                System.out.print("Enter your name: ");
+                String buyerName = scanner.nextLine();
+
+                System.out.print("Enter your email: ");
+                String buyerEmail = scanner.nextLine();
+
+                System.out.print("Enter your bid amount: ₱");
+                double bidAmount = scanner.nextDouble();
+                scanner.nextLine();
+
+                chosenItem.placeBid(buyerName, buyerEmail, bidAmount);
+                System.out.println("Bid placed successfully.");
+            } else {
+                System.out.println("Purchase canceled.");
+            }
+        } else if (itemNumber == 0) {
+            System.out.println("Purchase canceled.");
+        } else {
+            System.out.println("Invalid item number.");
+        }
+    }
+}
+
+class Sell {
+
+    private ArrayList<Item> itemsList = new ArrayList<>();
+    private List<Item> itemsList1 = new ArrayList<>();
+
+    public void addItem(Item item) {
+        itemsList.add(item);
+    }
+
+    public void sell(Scanner scanner) {
+        System.out.print("\nEnter Name of Item: ");
+        String itemName = scanner.nextLine();
+
+        System.out.print("Enter Item Description: ");
+        String itemDescription = scanner.nextLine();
+
+        System.out.print("Enter Starting Bid Price: ₱");
+        double startingBid = scanner.nextDouble();
+
+        scanner.nextLine();
+
+        System.out.print("Enter Bidding Increment: ₱");
+        double bidIncrement = scanner.nextDouble();
+
+        scanner.nextLine();
+
+        System.out.print("Enter Beginning of the Auction (MM/DD/YYYY): ");
+        String begin = scanner.nextLine();
+
+        System.out.print("Enter Auction Closure Date (MM/DD/YYYY): ");
+        String closure = scanner.nextLine();
+
+        scanner.nextLine();
+
+        Item newItem = new Item(itemName, itemDescription, begin, closure, startingBid, bidIncrement);
+        addItem(newItem);
+    }
+
+    public void showItemsMenu() {
+        System.out.println("\n-- Items Available --");
+        showItemsWithNumbers();
+    }
+
+    public void showItemsWithNumbers() {
+        for (int i = 0; i < itemsList.size(); i++) {
+            System.out.println((i + 1) + ". " + itemsList.get(i).getItem());
+        }
+    }
+
+    public int getItemsListSize() {
+        return itemsList.size();
+    }
+
+    public Item getItemByNumber(int itemNumber) {
+        if (itemNumber >= 1 && itemNumber <= itemsList.size()) {
+            return itemsList.get(itemNumber - 1);
+        }
+        return null;
+    }
+
+    public List<Item> getItemsList() {
+        return itemsList1;
+    }
+}
+
+class Item {
+
+    private String item, description, begin, closure;
+    private double startingBid, bidIncrement;
+
+    private List<Bid> bids = new ArrayList<>();
+
+    public Item(String item, String description, String begin, String closure, double startingBid, double bidIncrement) {
+        this.item = item;
+        this.description = description;
+        this.begin = begin;
+        this.closure = closure;
+        this.startingBid = startingBid;
+        this.bidIncrement = bidIncrement;
+    }
+
+    public void placeBid(String buyerName, String buyerEmail, double bidAmount) {
+        Bid bidding = new Bid(buyerName, buyerEmail, bidAmount);
+        bids.add(bidding);
+    }
+
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public String getItem() {
+        return item;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getBegin() {
+        return begin;
+    }
+
+    public String getClosure() {
+        return closure;
+    }
+
+    public double getStartingBid() {
+        return startingBid;
+    }
+
+    public double getBidIncrement() {
+        return bidIncrement;
+    }
+
+    public Bid getHighestBid() {
+        Bid highestBid = null;
+        double maxBidAmount = 0.0;
+
+        for (Bid bid : bids) {
+            if (bid.getBidAmount() > maxBidAmount) {
+                maxBidAmount = bid.getBidAmount();
+                highestBid = bid;
+            }
+        }
+
+        return highestBid;
+    }
+
+    private List<String> feedbacks = new ArrayList<>();
+
+    public void addFeedback(String feedback) {
+        feedbacks.add(feedback);
+    }
+
+    public List<String> getFeedbacks() {
+        return feedbacks;
+    }
+}
+
+class Bid {
+
+    private String buyerName;
+    private String buyerEmail;
+    private double bidAmount;
+
+    public Bid(String buyerName, String buyerEmail, double bidAmount) {
+        this.buyerName = buyerName;
+        this.buyerEmail = buyerEmail;
+        this.bidAmount = bidAmount;
+    }
+
+    public String getBuyerName() {
+        return buyerName;
+    }
+
+    public String getBuyerEmail() {
+        return buyerEmail;
+    }
+
+    public double getBidAmount() {
+        return bidAmount;
+    }
+}
